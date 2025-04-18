@@ -1,6 +1,8 @@
 cmake_minimum_required(VERSION 3.8)
 project(mess2_logger)
 
+cmake_policy(SET CMP0115 NEW)
+
 if(CMAKE_COMPILER_IS_GNUCXX OR CMAKE_CXX_COMPILER_ID MATCHES "Clang")
   add_compile_options(-Wall -Wextra -Wpedantic)
 endif()
@@ -13,7 +15,7 @@ find_package(Python3 REQUIRED COMPONENTS Interpreter Development)
 
 include_directories(include)
 
-pybind11_add_module(msg_parser src/msg_parser)
+pybind11_add_module(msg_parser src/msg_parser.cpp)
 target_link_libraries(msg_parser PRIVATE ament_index_cpp::ament_index_cpp)
 
 install(TARGETS msg_parser
