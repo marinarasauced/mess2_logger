@@ -63,3 +63,23 @@ To start the nodes, execute the following command in a terminal:
 ```zsh
 ros2 run mess2_logger main.py
 ```
+
+Three default launch options are available. All launch.py files include the following launch arguments: `namespace`, `log_dir_path`, `topic_names`, and `period`. All launch.py files contain logic in the `launch_setup` function to account for different cases where topics and namespaces are entered differently; i.e., `namespace='mess2'` with `topic_names='/topic1, /namespace2/topic2', topic3, namespace3/topic4`.
+
+The first launch option `logger.launch.py` is considered the default launch.py file and utilizes the default launch arguments.
+
+```zsh
+ros2 launch mess2_logger logger.launch.py namespace:='mess2' log_dir_path:='~/mess2/logs' topic_names:='topic1, topic2' period:=5.0
+```
+
+The second launch option `experiment.launch.py` auto generates a subdirectory in `log_dir_path` of the form `XXXX_YYYY-MM-DD_HH:MM:SS` where `XXXX` is the trial number (i.e., 0001, 0002, etc.) and the remainder is descriptive of the time of the start of the trial.
+
+```zsh
+ros2 launch mess2_logger experiment.launch.py namespace:='mess2' log_dir_path:='~/mess2/logs' topic_names:='topic1, topic2' period:=5.0
+```
+
+The third launch option `experiments.launch.py` adds a launch argument `trial_dir` such that the log_dir_path parameter is the joined path of the `log_dir_path` and `trial_dir` launch arguments.
+
+```zsh
+ros2 launch mess2_logger experiments.launch.py namespace:='mess2' log_dir_path:='~/mess2/logs' trial_dir:='0000' topic_names:='topic1, topic2' period:=5.0
+```
