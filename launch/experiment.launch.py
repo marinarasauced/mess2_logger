@@ -4,6 +4,8 @@ from launch.actions import DeclareLaunchArgument, OpaqueFunction
 from launch.substitutions import LaunchConfiguration
 from launch_ros.actions import Node
 
+from mess2_logger.trial import get_trial_dir_path
+
 
 launch_args = [
     DeclareLaunchArgument(
@@ -40,13 +42,14 @@ def launch_setup(context) -> list[Action]:
         for topic_name in topic_names_arg.split(',')
         if topic_name.strip()
     ]
+    trial_dir_path = get_trial_dir_path(log_dir_path=LaunchConfiguration('log_dir_path').perform(context).strip())
 
     node = Node(
         package='mess2_logger',
         executable='main.py',
         namespace=LaunchConfiguration('namespace'),
         parameters=[
-            {'log_dir_path': LaunchConfiguration('log_dir_path')},
+            {'log_dir_path': trial_dir_path},
             {'topic_names': topic_names},
             {'period': LaunchConfiguration('period')},
         ]

@@ -46,7 +46,7 @@ class LoggerNode(Node):
     def is_advertised(self) -> None:
         """
         """
-        self.get_logger().info(f"Topic {self.topic_name} is advertised, parsing message")
+        self.get_logger().info(f"Topic {self.topic_name} is advertised, parsin  g message")
 
         modules = self.topic_type.__module__.split(".")
         msg_pkg = modules[0]
