@@ -90,9 +90,9 @@ ros2 launch mess2_logger experiments.launch.py namespace:='mess2' log_dir_path:=
 
 ### Log Files
 
-Log files follow a standard format. The ROS 2 message parser function returns a list of complete fields for a given message type. These fields are the first row, and all subsequent rows are the corresponding values of each field. An example for a topic `/test_topic` with type `std_msgs/msg/Header` is shown below assuming the messages published via ```zsh ros2 topic pub /test_topic std_msgs/msg/Header```:
+Log files follow a standard format. The ROS 2 message parser function returns a list of complete fields for a given message type. These fields are the first row, and all subsequent rows are the corresponding values of each field. An example for a topic `/test_topic` with type `std_msgs/msg/Header` is shown below assuming the messages published via `ros2 topic pub /test_topic std_msgs/msg/Header`:
 
-mess2_logger_test_topic.csv
+test_topic.csv
 | msg.stamp.sec | msg.stamp.nanosec | msg.frame_id |
 | --- | --- | --- |
 | 0 | 0 |  |
@@ -104,12 +104,12 @@ mess2_logger_test_topic.csv
 
 The `mess2_logger` package integrates C++ backend using `pybind11`. The following are examples of how to use the exposed functions and classes.
 
-`parse_msg(prefix, msg_type)`
+### `parse_msg(prefix, msg_type)`
 
 - **Description:** Parses a ROS 2 message type and converts it list of all complete fields.
 - **Arguments:** 
-    - prefix: str = the name of the variable being evaluated in the subscription callback
-    - msg_type: str = the type of the message in the form `pkg_name/msg/Type`
+    - prefix: str = the name of the variable being evaluated in the subscription callback.
+    - msg_type: str = the type of the message in the form `pkg_name/msg/Type`.
 - **Returns:**
     - list[str] = All complete fields of the message type.
 
@@ -118,4 +118,27 @@ Example:
 ```py
 from mess2_logger.msg_parser import parse_msg
 parsed_msg: list[str] = parse_msg(prefix="msg", msg_type="std_msgs/msg/Header")
+```
+
+### `Logger(log_file_path: str, overwrite: bool = True)`
+
+- **Description:** Handles logging to `.csv` file for logger node instance, including opening file, clearing file, appending rows to file, and closing file.
+- **Arguments:** 
+    - log_file_path: str = the absolute path to the log file
+    - overwrite: bool = decides whether to overwrite preexisting data if a log file already exists at `log_file_path`
+
+#### `log(data: list[str])`
+
+- **Description:** Logs a row of data to the open `.csv` file.
+- **Arguments:** 
+    - data: list[str] = the data formatted in the subscription callback function using the parsed message.
+
+Example:
+
+```py
+from mess2_logger.msg_logger import Logger
+logger: Logger = Logger(log_file_path="/home/marinarasauced/mess2/logs/0000/test_topic.csv", overwrite=True)
+
+logger.log(["msg.stamp.sec", "msg.stamp.nanosec", "msg.frame_id"])
+logger.log(["0", "0", ""])
 ```
