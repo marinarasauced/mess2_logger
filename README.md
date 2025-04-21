@@ -13,12 +13,9 @@ This package contains a general purpose data logger for ROS 2, designed to be ac
 
 This package is released under an [MIT License](https://github.com/marinarasauced/mess2_logger/blob/main/LICENSE).
 
-Authors: [Marina Nelson](https://github.com/marinarasauced)
-
-Contributors: [Vik095](https://github.com/Vik095) ([ros msg parser in py](https://github.com/Vik095/Ros_msgs_parser))
-
-Affiliation: *[ACE Lab](https://rvcowlagi-research.owlstown.net/)
-
+Authors: [Marina Nelson](https://github.com/marinarasauced) <br/>
+Contributors: [Vik095](https://github.com/Vik095) ([ros msg parser in py](https://github.com/Vik095/Ros_msgs_parser)) <br/>
+Affiliation: *[ACE Lab](https://rvcowlagi-research.owlstown.net/) <br/>
 Maintainer: Marina Nelson, marinarasauced@outlook.com
 
 **The original version of the package was developed for the ACE Lab at WPI. This current version is streamlined to improve code legibility and improve performance.*
