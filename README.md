@@ -99,18 +99,6 @@ test_topic.csv
 | 0 | 0 |  |
 | 0 | 0 |  |
 
-## Parameters
-
-The nodes in the `mess2_logger` package contain several ROS 2 parameters:
-
-| Parameter | Description | Default Value |
-| `namespace` | The namespace of the topics being logged. | `''` |
-| `log_dir_path` | The relative path from the user's home directory to the location where the topics are to be logged. | `'~/mess2/logs'` |
-| `trial_dir` | An optional subdirectory for keeping track of log files for multi-trial experiments. | `'0000'` |
-| `topic_names` | The names of all topics to be logged in list form | `'test1, test2'` |
-| `period` | The period of a timer function that checks if topics are advertised in seconds | `5.0` |
-
-
 ## pybind11 Interface
 
 The `mess2_logger` package integrates C++ backend using `pybind11`. The following are examples of how to use the exposed functions and classes.
