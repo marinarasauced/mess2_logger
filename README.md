@@ -95,6 +95,27 @@ Log files follow a standard format. The ROS 2 message parser function returns a 
 mess2_logger_test_topic.csv
 | msg.stamp.sec | msg.stamp.nanosec | msg.frame_id |
 | --- | --- | --- |
-| 0 | 0 | '' |
-| 0 | 0 | '' |
-| 0 | 0 | '' |
+| 0 | 0 |  |
+| 0 | 0 |  |
+| 0 | 0 |  |
+
+
+## pybind11 Interface
+
+The `mess2_logger` package integrates C++ backend using `pybind11`. The following are examples of how to use the exposed functions and classes.
+
+`parse_msg(prefix, msg_type)`
+
+- **Description:** Parses a ROS 2 message type and converts it list of all complete fields.
+- **Arguments:** 
+    - prefix: str = the name of the variable being evaluated in the subscription callback
+    - msg_type: str = the type of the message in the form `pkg_name/msg/Type`
+- **Returns:**
+    - list[str] = All complete fields of the message type.
+
+Example:
+
+```py
+from mess2_logger.msg_parser import parse_msg
+parsed_msg: list[str] = parse_msg(prefix="msg", msg_type="std_msgs/msg/Header")
+```
