@@ -15,7 +15,7 @@ This package is released under an [MIT License](https://github.com/marinarasauce
 
 Authors: [Marina Nelson](https://github.com/marinarasauced) <br/>
 Contributors: [Vik095](https://github.com/Vik095) ([ros msg parser in py](https://github.com/Vik095/Ros_msgs_parser)) <br/>
-Affiliation: *[ACE Lab](https://rvcowlagi-research.owlstown.net/) <br/>
+Affiliation: [ACE Lab](https://rvcowlagi-research.owlstown.net/)* <br/>
 Maintainer: Marina Nelson, marinarasauced@outlook.com
 
 **The original version of the package was developed for the ACE Lab at WPI. This current version is streamlined to improve code legibility and improve performance.*
@@ -64,7 +64,11 @@ To start the nodes, execute the following command in a terminal:
 ros2 run mess2_logger main.py
 ```
 
-Three default launch options are available. All launch.py files include the following launch arguments: `namespace`, `log_dir_path`, `topic_names`, and `period`. All launch.py files contain logic in the `launch_setup` function to account for different cases where topics and namespaces are entered differently; i.e., `namespace='mess2'` with `topic_names='/topic1, /namespace2/topic2', topic3, namespace3/topic4`.
+Nodes follow a standard naming pattern. For a logger node instance for a topic `'/ns/topic123'`, the name of the node is `'mess2_logger_ns_topic123'`. Logger node instances are spawned after the `'mess2_logger_initializer'` node, which is destroyed after all logger node instances have started.
+
+### Launch Files
+
+Three default launch options are available. All launch.py files include the following launch arguments: `namespace`, `log_dir_path`, `topic_names`, and `period`. All launch.py files contain logic in the `launch_setup` function to account for different cases where topics and namespaces are entered differently; i.e., `namespace='mess2'` with `topic_names='/topic1, /namespace2/topic2, topic3, namespace3/topic4'`.
 
 The first launch option `logger.launch.py` is considered the default launch.py file and utilizes the default launch arguments.
 
@@ -83,3 +87,14 @@ The third launch option `experiments.launch.py` adds a launch argument `trial_di
 ```zsh
 ros2 launch mess2_logger experiments.launch.py namespace:='mess2' log_dir_path:='~/mess2/logs' trial_dir:='0000' topic_names:='topic1, topic2' period:=5.0
 ```
+
+### Log Files
+
+Log files follow a standard format. The ROS 2 message parser function returns a list of complete fields for a given message type. These fields are the first row, and all subsequent rows are the corresponding values of each field. An example for a topic `/test_topic` with type `std_msgs/msg/Header` is shown below assuming the messages published via ```zsh ros2 topic pub /test_topic std_msgs/msg/Header```:
+
+mess2_logger_test_topic.csv
+| msg.stamp.sec | msg.stamp.nanosec | msg.frame_id |
+| --- | --- | --- |
+| 0 | 0 | '' |
+| 0 | 0 | '' |
+| 0 | 0 | '' |
