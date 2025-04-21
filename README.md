@@ -99,6 +99,17 @@ test_topic.csv
 | 0 | 0 |  |
 | 0 | 0 |  |
 
+## Parameters
+
+The nodes in the `mess2_logger` package contain several ROS 2 parameters:
+
+| Parameter | Description | Default Value |
+| `namespace` | The namespace of the topics being logged. | `''` |
+| `log_dir_path` | The relative path from the user's home directory to the location where the topics are to be logged. | `'~/mess2/logs'` |
+| `trial_dir` | An optional subdirectory for keeping track of log files for multi-trial experiments. | `'0000'` |
+| `topic_names` | The names of all topics to be logged in list form | `'test1, test2'` |
+| `period` | The period of a timer function that checks if topics are advertised in seconds | `5.0` |
+
 
 ## pybind11 Interface
 
@@ -132,6 +143,7 @@ parsed_msg: list[str] = parse_msg(prefix="msg", msg_type="std_msgs/msg/Header")
 - **Description:** Logs a row of data to the open `.csv` file.
 - **Arguments:** 
     - data: list[str] = the data formatted in the subscription callback function using the parsed message.
+- **Methods:**
 
 Example:
 
