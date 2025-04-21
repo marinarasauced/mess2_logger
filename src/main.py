@@ -18,7 +18,7 @@ def main(args=None):
         clean_name = topic_name.strip("/").replace("/", "_")
         node_name = f"mess2_logger_{clean_name}"
         container.append(LoggerNode(
-            log_dir_path=initializer.log_dir_path,
+            log_dir_path=initializer.log_dir_path, 
             node_name=node_name,
             topic_name=topic_name,
             period=initializer.period
@@ -26,7 +26,7 @@ def main(args=None):
     
     initializer.destroy_node()
 
-    executor = MultiThreadedExecutor(num_threads=4)
+    executor = MultiThreadedExecutor(num_threads=2)
     for node in container:
         executor.add_node(node)
     
