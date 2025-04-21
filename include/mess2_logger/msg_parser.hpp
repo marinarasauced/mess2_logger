@@ -50,10 +50,10 @@ bool is_field_type_primitive(
 /**
  * 
  */
-void parse_msg(
+std::vector<std::string> parse_msg(
     const std::string &prefix,
-    const std::string &msg_type,
-    std::vector<std::string> &msg_fields
+    const std::string &msg_type
 );
+
 
 #endif // MESS2_LOGGER_CPP_MSG_PARSER_HPP

@@ -2,7 +2,6 @@
 #include "mess2_logger/msg_parser.hpp"
 #include <iostream>
 
-
 std::string get_msg_file_path(
     const std::string &msg_type
 ) {
@@ -14,7 +13,6 @@ std::string get_msg_file_path(
     std::string ss1 = msg_type.substr(0, pos);
     std::string ss3 = msg_type.substr(pos + 1);
     std::string share_dir_path = ament_index_cpp::get_package_share_directory(ss1);
-    std::cout << share_dir_path + "/" + ss3 + ".msg" << std::endl;
     return share_dir_path + "/" + ss3 + ".msg";
 }
 
@@ -34,10 +32,12 @@ bool is_field_type_primitive(
 }
 
 
-void parse_msg(const std::string &prefix,
-    const std::string &msg_type,
-    std::vector<std::string> &msg_fields
+std::vector<std::string> parse_msg(
+    const std::string &prefix,
+    const std::string &msg_type
 ) {
+    std::vector<std::string> msg_fields;
+
     std::string msg_file_path = get_msg_file_path(msg_type);
     std::ifstream file(msg_file_path);
     if (!file.is_open()) {
@@ -65,6 +65,9 @@ void parse_msg(const std::string &prefix,
         if (is_field_type_primitive(field_type)) {
             msg_fields.push_back(prefix + "." + field_name);
         } else {
+            std::string nested_prefix = prefix + "." + field_name;
+            std::string nested_type;
+
             if (field_type.find("/") != std::string::npos) {
                 size_t pos = field_type.find("/");
                 std::string ss1 = field_type.substr(0, pos);
@@ -72,7 +75,7 @@ void parse_msg(const std::string &prefix,
                 if (ss3.find("msg/") == std::string::npos) {
                     ss3 = "msg/" + ss3;
                 }
-                (void) parse_msg(prefix + "." + field_name, ss1 + "/" + ss3, msg_fields);
+                nested_type = ss1 + "/" + ss3;
             } else {
                 const std::string search = "/share/";
                 size_t pos = msg_file_path.find(search);
@@ -91,14 +94,20 @@ void parse_msg(const std::string &prefix,
                 if (ss3.find("msg/") == std::string::npos) {
                     ss3 = "msg/" + ss3;
                 }
-                (void) parse_msg(prefix + "." + field_name, ss1 + "/" + ss3, msg_fields);
+                nested_type = ss1 + "/" + ss3;
             }
+
+            auto nested_fields = parse_msg(nested_prefix, nested_type);
+            msg_fields.insert(msg_fields.end(), nested_fields.begin(), nested_fields.end());
         }
     }
+
+    return msg_fields;
 }
 
 
 PYBIND11_MODULE(msg_parser, m) {
     m.doc() = "ros2 message parser";
-    m.def("parse_msg", &parse_msg, "placeholder");
+    m.def("parse_msg", &parse_msg, "Parses a ROS2 message file from its share directory to obtain a list of all field names."
+    );
 }
