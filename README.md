@@ -2,6 +2,9 @@
 
 ROS 2 package for logging messages directly to `.csv` files; not recommended for binary message types with large arrays (i.e., images, point clouds) or significant volumes of data as these may result in poor performance.
 
+> [!WARNING]
+> Use of this package is not advised for users who are familiar with ROS 2; please use ros2bag instead.
+
 ## Overview
 
 This package contains a general purpose data logger for ROS 2, designed to be accessible to users with limited experience in robotics software who may prefer human-readable data over ROS-specific serialization (i.e., rosbag2).
