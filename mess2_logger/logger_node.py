@@ -18,6 +18,7 @@ class LoggerNode(Node):
         self.log_dir_path = log_dir_path
         self.topic_name = topic_name
         self.period = period
+        self.counter = 0
 
         self.log_file_path = path.abspath(path.join(self.log_dir_path, f"{self.topic_name[1:].replace("/", "_")}.msg"))
         self.logger = Logger(self.log_file_path)
@@ -35,6 +36,13 @@ class LoggerNode(Node):
     def is_not_advertised(self) -> None:
         """
         """
+        self.counter += 1
+        if self.counter >= 10:
+            self.get_logger().info(f"Topic {self.topic_name} expired after {10} checks")
+            if hasattr(self, "timer"):
+                self.timer.destroy()
+                return
+
         self.get_logger().info(f"Topic {self.topic_name} is not advertised, checking again in {self.period} seconds")
 
         self.topic_type = get_msg_class(self, self.topic_name)
@@ -46,7 +54,7 @@ class LoggerNode(Node):
     def is_advertised(self) -> None:
         """
         """
-        self.get_logger().info(f"Topic {self.topic_name} is advertised, parsin  g message")
+        self.get_logger().info(f"Topic {self.topic_name} is advertised, parsing message")
 
         modules = self.topic_type.__module__.split(".")
         msg_pkg = modules[0]

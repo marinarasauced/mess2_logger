@@ -27,7 +27,7 @@ void Logger::log(
     for (size_t i = 0; i < data.size(); ++i) {
         log_file << data[i];
         if (i < data.size() - 1) {
-            log_file << ",";
+            log_file << ";";
         }
     }
     log_file << "\n";
